@@ -1,49 +1,77 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const QuranPrayerApp());
+  runApp(const MuslimCompanionApp());
 }
 
-class QuranPrayerApp extends StatelessWidget {
-  const QuranPrayerApp({super.key});
+class MuslimCompanionApp extends StatelessWidget {
+  const MuslimCompanionApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'نور الهدى',
+      title: 'رفيق المسلم',
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0F5132),
-          primary: const Color(0xFF0F5132),
-          secondary: const Color(0xFFD4AF37),
-        ),
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        primaryColor: const Color(0xFF0D5C46),
+        scaffoldBackgroundColor: const Color(0xFFF4F7F5),
       ),
-      home: const MainHomeScreen(),
+      home: const HomeContainerScreen(),
     );
   }
 }
 
-class MainHomeScreen extends StatefulWidget {
-  const MainHomeScreen({super.key});
+class HomeContainerScreen extends StatefulWidget {
+  const HomeContainerScreen({super.key});
 
   @override
-  State<MainHomeScreen> createState() => _MainHomeScreenState();
+  State<HomeContainerScreen> createState() => _HomeContainerScreenState();
 }
 
-class _MainHomeScreenState extends State<MainHomeScreen> {
-  int _tasbeehCount = 0;
-  String _currentZikr = 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ';
+class _HomeContainerScreenState extends State<HomeContainerScreen> {
+  int _activeTab = 0;
+  int _counter = 0;
+  int _zikrIndex = 0;
 
-  final List<Map<String, String>> _prayerTimes = [
-    {'name': 'الفجر', 'time': '04:45 ص', 'icon': '🌅'},
-    {'name': 'الشروق', 'time': '06:08 ص', 'icon': '☀️'},
-    {'name': 'الظهر', 'time': '12:15 م', 'icon': '🌞'},
-    {'name': 'العصر', 'time': '03:32 م', 'icon': '🌤️'},
-    {'name': 'المغرب', 'time': '06:05 م', 'icon': '🌇'},
-    {'name': 'العشاء', 'time': '07:35 م', 'icon': '🌙'},
+  final List<String> _tasbeehPhrases = [
+    'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ',
+    'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+    'لَا إِلَهَ إِلَّا اللَّهُ',
+    'اللَّهُ أَكْبَرُ كَبِيرًا',
+    'أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ',
+  ];
+
+  final List<Map<String, String>> _dailyPrayers = [
+    {'title': 'الفجر', 'clock': '04:48 ص', 'symbol': '🌌'},
+    {'title': 'الشروق', 'clock': '06:10 ص', 'symbol': '🌅'},
+    {'title': 'الظهر', 'clock': '12:18 م', 'symbol': '☀️'},
+    {'title': 'العصر', 'clock': '03:35 م', 'symbol': '🌤️'},
+    {'title': 'المغرب', 'clock': '06:08 م', 'symbol': '🌇'},
+    {'title': 'العشاء', 'clock': '07:38 م', 'symbol': '🌙'},
+  ];
+
+  final List<Map<String, String>> _surahList = [
+    {'num': '1', 'name': 'سورة الفاتحة', 'type': 'مكية - 7 آيات'},
+    {'num': '2', 'name': 'سورة البقرة', 'type': 'مدنية - 286 آية'},
+    {'num': '18', 'name': 'سورة الكهف', 'type': 'مكية - 110 آيات'},
+    {'num': '36', 'name': 'سورة يس', 'type': 'مكية - 83 آية'},
+    {'num': '55', 'name': 'سورة الرحمن', 'type': 'مدنية - 78 آية'},
+    {'num': '67', 'name': 'سورة الملك', 'type': 'مكية - 30 آية'},
+  ];
+
+  final List<Map<String, String>> _azkarItems = [
+    {
+      'category': 'أذكار الصباح',
+      'body': 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ.'
+    },
+    {
+      'category': 'أذكار المساء',
+      'body': 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ.'
+    },
+    {
+      'category': 'سيد الاستغفار',
+      'body': 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ.'
+    },
   ];
 
   @override
@@ -52,165 +80,202 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: const Color(0xFF0F5132),
+          backgroundColor: const Color(0xFF0D5C46),
           foregroundColor: Colors.white,
           centerTitle: true,
+          elevation: 0,
           title: const Text(
-            'تطبيق القرآن ومواقيت الصلاة',
-            style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+            'رفيق المسلم - الصلاة والقرآن',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // بطاقة الصلاة القادمة الرئيسية
-              _buildNextPrayerCard(),
-              const SizedBox(height: 18),
-
-              // عنوان قسم المواقيت
-              const Text(
-                '🕌 مواقيت الصلاة اليوم',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
-              ),
-              const SizedBox(height: 10),
-
-              // بطاقات المواقيت المصغرة
-              _buildPrayerTimesGrid(),
-              const SizedBox(height: 20),
-
-              // الأقسام السريعة (القرآن والأذكار)
-              const Text(
-                '📖 الأقسام الرئيسية',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
-              ),
-              const SizedBox(height: 10),
-              _buildFeatureCards(),
-              const SizedBox(height: 20),
-
-              // المسبحة الإلكترونية التفاعلية
-              _buildTasbeehSection(),
-              const SizedBox(height: 25),
-            ],
-          ),
+        body: _buildCurrentTabContent(),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _activeTab,
+          onTap: (idx) {
+            setState(() {
+              _activeTab = idx;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: const Color(0xFF0D5C46),
+          unselectedItemColor: Colors.grey,
+          backgroundColor: Colors.white,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.access_time_filled), label: 'المواقيت'),
+            BottomNavigationBarItem(icon: Icon(Icons.menu_book_rounded), label: 'القرآن'),
+            BottomNavigationBarItem(icon: Icon(Icons.wb_sunny_rounded), label: 'الأذكار'),
+            BottomNavigationBarItem(icon: Icon(Icons.touch_app_rounded), label: 'المسبحة'),
+          ],
         ),
       ),
     );
   }
 
-  // بطاقة مميزة للصلاة القادمة بتصميم متدرج
-  Widget _buildNextPrayerCard() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF0F5132), Color(0xFF198754)],
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF0F5132).withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
+  Widget _buildCurrentTabContent() {
+    if (_activeTab == 1) {
+      return _buildQuranScreen();
+    } else if (_activeTab == 2) {
+      return _buildAzkarScreen();
+    } else if (_activeTab == 3) {
+      return _buildTasbeehScreen();
+    }
+    return _buildPrayerTimesScreen();
+  }
+
+  // 1. شاشة مواقيت الصلاة
+  Widget _buildPrayerTimesScreen() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                'الصلاة القادمة: صلاة العصر',
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              Text('🌤️', style: TextStyle(fontSize: 24)),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            '03:32 م',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 34,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-            ),
-          ),
-          const SizedBox(height: 6),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.18),
-              borderRadius: BorderRadius.circular(20),
+              gradient: const LinearGradient(
+                colors: [Color(0xFF0D5C46), Color(0xFF1B8A6B)],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+              ),
+              borderRadius: BorderRadius.circular(18),
             ),
-            child: const Text(
-              'متبقي على الأذان: ساعتان و 10 دقائق',
-              style: TextStyle(color: Color(0xFFFFE082), fontSize: 13, fontWeight: FontWeight.bold),
+            child: Column(
+              children: const [
+                Text(
+                  'الصلاة القادمة: صلاة العصر',
+                  style: TextStyle(color: Colors.white70, fontSize: 15),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '03:35 م',
+                  style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'حافظوا على الصلوات والصلاة الوسطى',
+                  style: TextStyle(color: Color(0xFFFFD54F), fontSize: 13),
+                ),
+              ],
             ),
           ),
+          const SizedBox(height: 20),
+          const Text(
+            'جدول المواقيت اليومية',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
+          ),
+          const SizedBox(height: 10),
+          ..._dailyPrayers.map((item) {
+            final bool highlight = item['title'] == 'العصر';
+            return Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: highlight ? const Color(0xFFE6F4EA) : Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: highlight ? const Color(0xFF0D5C46) : const Color(0xFFE5E7EB),
+                  width: highlight ? 1.5 : 1.0,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(item['symbol'] ?? '', style: const TextStyle(fontSize: 22)),
+                      const SizedBox(width: 12),
+                      Text(
+                        item['title'] ?? '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: highlight ? const Color(0xFF0D5C46) : Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    item['clock'] ?? '',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: highlight ? const Color(0xFF0D5C46) : Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 
-  // شبكة مواقيت الصلوات الخمس مع الشروق
-  Widget _buildPrayerTimesGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: _prayerTimes.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        childAspectRatio: 1.1,
-      ),
+  // 2. شاشة القرآن الكريم
+  Widget _buildQuranScreen() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _surahList.length,
       itemBuilder: (context, index) {
-        final prayer = _prayerTimes[index];
-        final isNext = prayer['name'] == 'العصر';
+        final surah = _surahList[index];
         return Container(
+          margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
-            color: isNext ? const Color(0xFFE8F5E9) : Colors.white,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: isNext ? const Color(0xFF0F5132) : Colors.grey.shade200,
-              width: isNext ? 1.5 : 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: const Color(0xFFE6F4EA),
+              child: Text(
+                surah['num'] ?? '',
+                style: const TextStyle(color: Color(0xFF0D5C46), fontWeight: FontWeight.bold),
               ),
-            ],
+            ),
+            title: Text(
+              surah['name'] ?? '',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            subtitle: Text(surah['type'] ?? ''),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Colors.grey),
+          ),
+        );
+      },
+    );
+  }
+
+  // 3. شاشة الأذكار
+  Widget _buildAzkarScreen() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _azkarItems.length,
+      itemBuilder: (context, index) {
+        final zikr = _azkarItems[index];
+        return Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFE5E7EB)),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(prayer['icon']!, style: const TextStyle(fontSize: 20)),
-              const SizedBox(height: 4),
               Text(
-                prayer['name']!,
-                style: TextStyle(
+                zikr['category'] ?? '',
+                style: const TextStyle(
+                  color: Color(0xFF0D5C46),
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: isNext ? const Color(0xFF0F5132) : Colors.black87,
+                  fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 2),
+              const Divider(height: 18),
               Text(
-                prayer['time']!,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: isNext ? const Color(0xFF0F5132) : Colors.black54,
-                  fontWeight: isNext ? FontWeight.bold : FontWeight.normal,
-                ),
+                zikr['body'] ?? '',
+                style: const TextStyle(fontSize: 15, height: 1.7, color: Colors.black87),
               ),
             ],
           ),
@@ -219,138 +284,87 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     );
   }
 
-  // بطاقات الخدمات الرئيسية
-  Widget _buildFeatureCards() {
-    return Column(
-      children: [
-        _buildServiceTile(
-          icon: Icons.menu_book_rounded,
-          title: 'القرآن الكريم',
-          subtitle: 'تصفح السور والأجزاء مع علامة الحفظ',
-          color: const Color(0xFF0F5132),
-        ),
-        const SizedBox(height: 10),
-        _buildServiceTile(
-          icon: Icons.brightness_7_rounded,
-          title: 'أذكار المسلم',
-          subtitle: 'أذكار الصباح، المساء، والنوم',
-          color: const Color(0xFFB45309),
-        ),
-        const SizedBox(height: 10),
-        _buildServiceTile(
-          icon: Icons.explore_rounded,
-          title: 'اتجاه القبلة',
-          subtitle: 'تحديد بوصلة القبلة بدقة',
-          color: const Color(0xFF0369A1),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildServiceTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-  }) {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-        side: Border.side(color: Colors.grey.shade200),
-      ),
-      color: Colors.white,
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.12),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: const TextStyle(fontSize: 12, color: Colors.black54),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16, color: Colors.grey),
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('تم اختيار: $title')),
-          );
-        },
-      ),
-    );
-  }
-
-  // المسبحة التفاعلية
-  Widget _buildTasbeehSection() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                '📿 المسبحة الإلكترونية',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                icon: const Icon(Icons.refresh_rounded, color: Colors.grey),
-                tooltip: 'إعادة ضبط العداد',
-                onPressed: () {
-                  setState(() => _tasbeehCount = 0);
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            _currentZikr,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xFF0F5132)),
-          ),
-          const SizedBox(height: 12),
-          GestureDetector(
-            onTap: () {
-              setState(() => _tasbeehCount++);
-            },
-            child: Container(
-              width: 100,
-              height: 100,
+  // 4. شاشة المسبحة الإلكترونية
+  Widget _buildTasbeehScreen() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF0F5132), Color(0xFF2E7D32)],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF0F5132).withOpacity(0.25),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
               ),
-              child: Center(
-                child: Text(
-                  '$_tasbeehCount',
-                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+              child: Text(
+                _tasbeehPhrases[_zikrIndex],
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0D5C46),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'اضغط على الدائرة للتسبيح',
-            style: TextStyle(fontSize: 12, color: Colors.black45),
-          ),
-        ],
+            const SizedBox(height: 30),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _counter++;
+                });
+              },
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF0D5C46), Color(0xFF1B8A6B)],
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '$_counter',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _counter = 0;
+                    });
+                  },
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('تصفير العداد'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      _zikrIndex = (_zikrIndex + 1) % _tasbeehPhrases.length;
+                      _counter = 0;
+                    });
+                  },
+                  icon: const Icon(Icons.swap_horiz),
+                  label: const Text('تغيير الذكر'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
