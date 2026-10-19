@@ -1,9 +1,12 @@
-name: Build Android APK
+name: Build APK & Web Preview
 
 on:
   push:
     branches: [ "main", "master" ]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -15,17 +18,28 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Android Structure
+      - name: Create Project Structure
         run: |
-          flutter create . --project-name prayer_app --platforms=android
+          flutter create . --project-name prayer_app --platforms=android,web
           flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --debug
+      # 1. بناء نسخة معاينة سريعة للويب (تفتح من رابط مباشر بالجوال)
+      - name: Build Web Preview
+        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
 
-      - name: Upload Artifact
+      - name: Deploy Web Preview to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+
+      # 2. بناء ملف APK مضغوط وخفيف (حوالي 18 ميغا فقط بدلاً من 75 ميغا)
+      - name: Build Light APK
+        run: flutter build apk --release --split-per-abi
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          name: app-release-light
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
           
