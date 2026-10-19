@@ -10,12 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: flutter pub get
-      - run: flutter build apk --debug
-      - uses: actions/upload-artifact@v4
+
+      - name: Create Android Structure
+        run: |
+          flutter create . --project-name prayer_app --platforms=android
+          flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --debug
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: build/app/outputs/flutter-apk/app-debug.apk
