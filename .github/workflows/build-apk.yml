@@ -18,21 +18,10 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Project Structure
+      - name: Install Dependencies & Build Web
         run: |
-          flutter create . --project-name prayer_app --platforms=android,web
-          if [ -f "icon.png" ]; then
-            rm -rf android/app/src/main/res/mipmap-anydpi-v26
-            cp icon.png android/app/src/main/res/mipmap-mdpi/ic_launcher.png
-            cp icon.png android/app/src/main/res/mipmap-hdpi/ic_launcher.png
-            cp icon.png android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
-            cp icon.png android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
-            cp icon.png android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
-          fi
           flutter pub get
-
-      - name: Build Web Preview
-        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+          flutter build web --release --no-wasm-dry-run --base-href "/${{ github.event.repository.name }}/"
 
       - name: Deploy Web Preview to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
