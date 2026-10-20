@@ -5,9 +5,6 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,18 +15,10 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Setup Android Project & Install Packages
+      - name: Get Dependencies & Build APK
         run: |
-          cp pubspec.yaml pubspec.yaml.bak
-          cp lib/main.dart main.dart.bak
-          flutter create . --project-name prayer_app --platforms=android,web
-          mv pubspec.yaml.bak pubspec.yaml
-          mv main.dart.bak lib/main.dart
-          sed -i 's/<application/<uses-permission android:name="android.permission.INTERNET"\/>\n    <application/' android/app/src/main/AndroidManifest.xml
           flutter pub get
-
-      - name: Build Android APK
-        run: flutter build apk --release --split-per-abi
+          flutter build apk --release --split-per-abi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
