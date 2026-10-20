@@ -37,7 +37,7 @@ class _NourIslamAppState extends State<NourIslamApp> {
     final brightness = dark ? Brightness.dark : Brightness.light;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'نور الإسلام',
+      title: 'نور الإسلام الشامل',
       theme: ThemeData(
         useMaterial3: true,
         brightness: brightness,
@@ -50,7 +50,7 @@ class _NourIslamAppState extends State<NourIslamApp> {
         cardTheme: CardThemeData(
           elevation: 0,
           color: dark ? const Color(0xFF122335) : Colors.white,
-          margin: const EdgeInsets.symmetric(vertical: 5),
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
         ),
       ),
       home: Directionality(
@@ -93,7 +93,7 @@ class PrayerTimesApi {
     });
 
     final response = await http.get(uri).timeout(const Duration(seconds: 20));
-    if (response.statusCode != 200) throw Exception('تعذّر جلب مواقيت الصلاة من الإنترنت.');
+    if (response.statusCode != 200) throw Exception('تعذّر جلب مواقيت الصلاة.');
 
     final root = jsonDecode(response.body) as Map<String, dynamic>;
     final data = root['data'] as Map<String, dynamic>;
@@ -103,7 +103,7 @@ class PrayerTimesApi {
     for (final key in names.keys) {
       final value = raw[key]?.toString() ?? '';
       final match = RegExp(r'\d{1,2}:\d{2}').firstMatch(value);
-      if (match == null) throw Exception('تعذّر قراءة موعد صلاة ${names[key]}.');
+      if (match == null) throw Exception('تعذّر قراءة صلاة ${names[key]}.');
       result[key] = match.group(0)!;
     }
 
@@ -130,12 +130,12 @@ class PrayerNotifications {
     tz_data.initializeTimeZones();
     try {
       final info = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(info)); // تصحيح 1
+      tz.setLocalLocation(tz.getLocation(info));
     } catch (_) {
       tz.setLocalLocation(tz.getLocation('UTC'));
     }
 
-    await plugin.initialize( // تصحيح 2
+    await plugin.initialize(
       const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(),
@@ -178,7 +178,7 @@ class PrayerNotifications {
         if (!scheduled.isAfter(DateTime.now())) continue;
         final id = (day.year * 10000 + day.month * 100 + day.day) * 10 + i;
 
-        await plugin.zonedSchedule( // تصحيح 3
+        await plugin.zonedSchedule(
           id,
           'حان وقت صلاة ${entry.value}',
           'حيّ على الصلاة • صلاة ${entry.value}',
@@ -225,15 +225,6 @@ class _HomePageState extends State<HomePage> {
   Timer? _clock;
   DateTime? _loadedDate;
 
-  static const calculationMethods = <int, String>{
-    3: 'رابطة العالم الإسلامي',
-    4: 'أم القرى',
-    5: 'الهيئة المصرية',
-    12: 'فرنسا',
-    13: 'تركيا',
-    21: 'المغرب',
-  };
-
   @override
   void initState() {
     super.initState();
@@ -260,8 +251,8 @@ class _HomePageState extends State<HomePage> {
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) throw Exception('لم تسمح للتطبيق باستخدام موقعك.');
-    if (permission == LocationPermission.deniedForever) throw Exception('إذن الموقع مرفوض نهائياً من إعدادات الهاتف.');
-    return Geolocator.getCurrentPosition(); // تصحيح 4
+    if (permission == LocationPermission.deniedForever) throw Exception('إذن الموقع مرفوض نهائياً.');
+    return Geolocator.getCurrentPosition();
   }
 
   Future<void> _refresh() async {
@@ -338,7 +329,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('نور الإسلام', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('نور الإسلام الشامل', style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             tooltip: 'تغيير المظهر',
@@ -351,7 +342,7 @@ class _HomePageState extends State<HomePage> {
         index: _tab,
         children: [
           _buildPrayerTab(),
-          const QuranTab(),
+          const QuranFullTab(),
           const AzkarTab(),
           const TasbihTab(),
           const DailyTrackerTab(),
@@ -362,7 +353,7 @@ class _HomePageState extends State<HomePage> {
         onDestinationSelected: (value) => setState(() => _tab = value),
         destinations: const [
           NavigationDestination(icon: Icon(Icons.access_time), selectedIcon: Icon(Icons.access_time_filled), label: 'الصلاة'),
-          NavigationDestination(icon: Icon(Icons.menu_book), label: 'القرآن'),
+          NavigationDestination(icon: Icon(Icons.menu_book), label: 'القرآن والصوت'),
           NavigationDestination(icon: Icon(Icons.favorite_outline), label: 'الأذكار'),
           NavigationDestination(icon: Icon(Icons.radio_button_checked), label: 'المسبحة'),
           NavigationDestination(icon: Icon(Icons.check_circle_outline), label: 'يومي'),
@@ -428,123 +419,124 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class QuranTab extends StatelessWidget {
-  const QuranTab({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(14),
-      children: const [
-        Card(child: ListTile(leading: Icon(Icons.menu_book, color: green), title: Text('سورة الفاتحة'), subtitle: Text('مكية • 7 آيات'))),
-        Card(child: ListTile(leading: Icon(Icons.menu_book, color: green), title: Text('سورة البقرة'), subtitle: Text('مدنية • 286 آية'))),
-        Card(child: ListTile(leading: Icon(Icons.menu_book, color: green), title: Text('سورة الكهف'), subtitle: Text('مكية • 110 آيات'))),
-        Card(child: ListTile(leading: Icon(Icons.menu_book, color: green), title: Text('سورة يس'), subtitle: Text('مكية • 83 آية'))),
-        Card(child: ListTile(leading: Icon(Icons.menu_book, color: green), title: Text('سورة الملك'), subtitle: Text('مكية • 30 آية'))),
-      ],
-    );
-  }
-}
+// ============================================================
+// QURAN & RECITERS TAB (القرآن والتفسير والقراء)
+// ============================================================
 
-class AzkarTab extends StatefulWidget {
-  const AzkarTab({super.key});
-  @override
-  State<AzkarTab> createState() => _AzkarTabState();
-}
-
-class _AzkarTabState extends State<AzkarTab> {
-  final List<Map<String, dynamic>> _azkar = [
-    {'title': 'أذكار الصباح والمساء', 'text': 'سبحان الله وبحمده، عدد خلقه، ورضا نفسه، وزنة عرشه.', 'count': 3},
-    {'title': 'الاستغفار', 'text': 'أستغفر الله العظيم وأتوب إليه.', 'count': 10},
-    {'title': 'الصلاة على النبي ﷺ', 'text': 'اللهم صلِّ وسلم على نبينا محمد.', 'count': 10},
-  ];
+class QuranFullTab extends StatefulWidget {
+  const QuranFullTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(14),
-      itemCount: _azkar.length,
-      itemBuilder: (ctx, i) {
-        final item = _azkar[i];
-        final count = item['count'] as int;
-        return Card(
-          child: ListTile(
-            title: Text(item['title'] as String, style: const TextStyle(fontWeight: FontWeight.bold, color: gold)),
-            subtitle: Text(item['text'] as String),
-            trailing: CircleAvatar(
-              backgroundColor: green,
-              child: Text('$count', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            ),
-            onTap: () {
-              if (count > 0) setState(() => item['count'] = count - 1);
-            },
-          ),
-        );
-      },
-    );
-  }
+  State<QuranFullTab> createState() => _QuranFullTabState();
 }
 
-class TasbihTab extends StatefulWidget {
-  const TasbihTab({super.key});
-  @override
-  State<TasbihTab> createState() => _TasbihTabState();
-}
+class _QuranFullTabState extends State<QuranFullTab> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+  String? _playingSurah;
+  String _selectedReciter = 'ar.alafasy';
 
-class _TasbihTabState extends State<TasbihTab> {
-  int _counter = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: gold)),
-          const SizedBox(height: 24),
-          GestureDetector(
-            onTap: () => setState(() => _counter++),
-            child: Container(
-              width: 140,
-              height: 140,
-              decoration: const BoxDecoration(shape: BoxShape.circle, color: green),
-              child: Center(
-                child: Text('$_counter', style: const TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(onPressed: () => setState(() => _counter = 0), child: const Text('تصفير')),
-        ],
-      ),
-    );
-  }
-}
-
-class DailyTrackerTab extends StatefulWidget {
-  const DailyTrackerTab({super.key});
-  @override
-  State<DailyTrackerTab> createState() => _DailyTrackerTabState();
-}
-
-class _DailyTrackerTabState extends State<DailyTrackerTab> {
-  final Map<String, bool> _goals = {
-    'الصلوات الخمس في وقتها': true,
-    'أذكار الصباح والمساء': true,
-    'قراءة ورد القرآن': true,
-    'صلاة الوتر': false,
+  final Map<String, String> _reciters = {
+    'ar.alafasy': 'مشاري العفاسي',
+    'ar.abdulbasit': 'عبد الباسط عبد الصمد',
+    'ar.minshawi': 'محمد صديق المنشاوي',
+    'ar.sudais': 'عبد الرحمن السديس',
   };
 
+  final List<Map<String, dynamic>> _surahs = [
+    {'number': 1, 'name': 'الفاتحة', 'englishName': 'Al-Faatiha', 'ayahs': 7, 'revelationType': 'Meccan', 'tafseer': 'سميت بالفاتحة لأنها تفتح بها القراءة في الصلاة وهي أم الكتاب.'},
+    {'number': 2, 'name': 'البقرة', 'englishName': 'Al-Baqara', 'ayahs': 286, 'revelationType': 'Medinan', 'tafseer': 'سورة مدنية عظيمة، فيها آية الكرسي وخواتيم تبين فضل الإيمان والتقوى.'},
+    {'number': 18, 'name': 'الكهف', 'englishName': 'Al-Kahf', 'ayahs': 110, 'revelationType': 'Meccan', 'tafseer': 'سورة مباركة تُقرأ يوم الجمعة، تحمي من الفتن وتضم قصة أصحاب الكهف.'},
+    {'number': 36, 'name': 'يس', 'englishName': 'Yaseen', 'ayahs': 83, 'revelationType': 'Meccan', 'tafseer': 'تركيز على التوحيد، البعث والنشور، وعظمة آيات الله في الكون.'},
+    {'number': 56, 'name': 'الواقعة', 'englishName': 'Al-Waqi\'a', 'ayahs': 96, 'revelationType': 'Meccan', 'tafseer': 'تصف أهوال يوم القيامة وانقسام الناس إلى ثلاثة أصناف.'},
+    {'number': 67, 'name': 'الملك', 'englishName': 'Al-Mulk', 'ayahs': 30, 'revelationType': 'Meccan', 'tafseer': 'السورة المنجية من عذاب القبر، الشافعة لصاحبها يوم القيامة.'},
+  ];
+
+  Future<void> _playAudio(int surahNum) async {
+    try {
+      final formattedNum = surahNum.toString().padLeft(3, '0');
+      final url = 'https://everyayah.com/data/$_selectedReciter/128/$formattedNum.mp3';
+      await _audioPlayer.stop();
+      await _audioPlayer.play(UrlSource(url));
+      setState(() {
+        _isPlaying = true;
+        _playingSurah = surahNum.toString();
+      });
+    } catch (e) {
+      debugPrint('Audio error: $e');
+    }
+  }
+
+  Future<void> _stopAudio() async {
+    await _audioPlayer.stop();
+    setState(() {
+      _isPlaying = false;
+      _playingSurah = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(14),
-      children: _goals.entries.map((e) => Card(
-        child: CheckboxListTile(
-          title: Text(e.key),
-          value: e.value,
-          activeColor: green,
-          onChanged: (v) => setState(() => _goals[e.key] = v ?? false),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              const Text('اختر القارئ:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: DropdownButton<String>(
+                  value: _selectedReciter,
+                  isExpanded: true,
+                  items: _reciters.entries.map((e) => DropdownMenuItem(value: e.key, child: Text(e.value))).toList(),
+                  onChanged: (val) {
+                    if (val != null) setState(() => _selectedReciter = val);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-      )).toList(),
-    );
-  }
-}
+        if (_isPlaying)
+          Container(
+            color: green.withOpacity(0.2),
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('جاري تشغيل التلاوة الصوتية...', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 10),
+                IconButton(icon: const Icon(Icons.stop_circle, color: Colors.red, size: 30), onPressed: _stopAudio),
+              ],
+            ),
+          ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _surahs.length,
+            itemBuilder: (context, index) {
+              final surah = _surahs[index];
+              final isCurrentPlaying = _playingSurah == surah['number'].toString();
+              return Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: green,
+                    child: Text('${surah['number']}', style: const TextStyle(color: Colors.white)),
+                  ),
+                  title: Text('سورة ${surah['name']}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text('${surah['revelationType'] == 'Meccan' ? 'مكية' : 'مدنية'} • ${surah['ayahs']} آية'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(isCurrentPlaying ? Icons.pause_circle : Icons.play_circle_fill, color: green, size: 32),
+                        onPressed: () {
+                          if (isCurrentPlaying) {
+                            _stopAudio();
+                   
