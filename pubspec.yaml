@@ -1,5 +1,5 @@
 name: prayer_app
-description: "A new Flutter project."
+description: "Islamic Companion App"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,10 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.0
-  geolocator: ^11.0.0
-  flutter_local_notifications: ^17.0.0
-  flutter_timezone: ^3.0.1
-  timezone: ^0.9.2
   audioplayers: ^6.0.0
 
 dev_dependencies:
