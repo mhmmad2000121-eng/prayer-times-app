@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:audioplayers/audioplayers.dart';
@@ -31,8 +32,12 @@ class _NourIslamAppState extends State<NourIslamApp> {
       theme: ThemeData(
         useMaterial3: true,
         brightness: brightness,
-        colorScheme: ColorScheme.fromSeed(seedColor: kGreen, brightness: brightness),
-        scaffoldBackgroundColor: _dark ? const Color(0xFF08131F) : const Color(0xFFF4F7F5),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: kGreen,
+          brightness: brightness,
+        ),
+        scaffoldBackgroundColor:
+            _dark ? const Color(0xFF08131F) : const Color(0xFFF4F7F5),
         appBarTheme: AppBarTheme(
           centerTitle: true,
           backgroundColor: _dark ? const Color(0xFF101F2F) : kGreen,
@@ -54,7 +59,11 @@ class HomePage extends StatefulWidget {
   final bool dark;
   final VoidCallback onThemeChanged;
 
-  const HomePage({super.key, required this.dark, required this.onThemeChanged});
+  const HomePage({
+    super.key,
+    required this.dark,
+    required this.onThemeChanged,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -76,64 +85,124 @@ class _HomePageState extends State<HomePage> {
       'name': 'مكة المكرمة',
       'cityEn': 'Makkah',
       'countryEn': 'Saudi Arabia',
-      'times': {'الفجر': '05:01', 'الشروق': '06:17', 'الظهر': '12:07', 'العصر': '15:28', 'المغرب': '17:58', 'العشاء': '19:28'},
+      'times': {
+        'الفجر': '05:01',
+        'الشروق': '06:17',
+        'الظهر': '12:07',
+        'العصر': '15:28',
+        'المغرب': '17:58',
+        'العشاء': '19:28',
+      },
     },
     {
       'name': 'المدينة المنورة',
       'cityEn': 'Madinah',
       'countryEn': 'Saudi Arabia',
-      'times': {'الفجر': '05:03', 'الشروق': '06:21', 'الظهر': '12:09', 'العصر': '15:27', 'المغرب': '17:56', 'العشاء': '19:26'},
+      'times': {
+        'الفجر': '05:03',
+        'الشروق': '06:21',
+        'الظهر': '12:09',
+        'العصر': '15:27',
+        'المغرب': '17:56',
+        'العشاء': '19:26',
+      },
     },
     {
       'name': 'جدة',
       'cityEn': 'Jeddah',
       'countryEn': 'Saudi Arabia',
-      'times': {'الفجر': '05:04', 'الشروق': '06:20', 'الظهر': '12:10', 'العصر': '15:31', 'المغرب': '18:01', 'العشاء': '19:31'},
+      'times': {
+        'الفجر': '05:04',
+        'الشروق': '06:20',
+        'الظهر': '12:10',
+        'العصر': '15:31',
+        'المغرب': '18:01',
+        'العشاء': '19:31',
+      },
     },
     {
       'name': 'الرياض',
       'cityEn': 'Riyadh',
       'countryEn': 'Saudi Arabia',
-      'times': {'الفجر': '04:35', 'الشروق': '05:53', 'الظهر': '11:41', 'العصر': '14:59', 'المغرب': '17:28', 'العشاء': '18:58'},
+      'times': {
+        'الفجر': '04:35',
+        'الشروق': '05:53',
+        'الظهر': '11:41',
+        'العصر': '14:59',
+        'المغرب': '17:28',
+        'العشاء': '18:58',
+      },
     },
     {
       'name': 'دمشق',
       'cityEn': 'Damascus',
       'countryEn': 'Syria',
-      'times': {'الفجر': '04:52', 'الشروق': '06:18', 'الظهر': '11:58', 'العصر': '15:14', 'المغرب': '17:39', 'العشاء': '19:02'},
+      'times': {
+        'الفجر': '04:52',
+        'الشروق': '06:18',
+        'الظهر': '11:58',
+        'العصر': '15:14',
+        'المغرب': '17:39',
+        'العشاء': '19:02',
+      },
     },
     {
       'name': 'حلب',
       'cityEn': 'Aleppo',
       'countryEn': 'Syria',
-      'times': {'الفجر': '04:48', 'الشروق': '06:17', 'الظهر': '11:55', 'العصر': '15:08', 'المغرب': '17:33', 'العشاء': '18:58'},
+      'times': {
+        'الفجر': '04:48',
+        'الشروق': '06:17',
+        'الظهر': '11:55',
+        'العصر': '15:08',
+        'المغرب': '17:33',
+        'العشاء': '18:58',
+      },
     },
     {
       'name': 'القاهرة',
       'cityEn': 'Cairo',
       'countryEn': 'Egypt',
-      'times': {'الفجر': '04:41', 'الشروق': '06:08', 'الظهر': '11:54', 'العصر': '15:11', 'المغرب': '17:39', 'العشاء': '18:57'},
+      'times': {
+        'الفجر': '04:41',
+        'الشروق': '06:08',
+        'الظهر': '11:54',
+        'العصر': '15:11',
+        'المغرب': '17:39',
+        'العشاء': '18:57',
+      },
     },
     {
       'name': 'عمّان',
       'cityEn': 'Amman',
       'countryEn': 'Jordan',
-      'times': {'الفجر': '04:55', 'الشروق': '06:19', 'الظهر': '12:00', 'العصر': '15:17', 'المغرب': '17:42', 'العشاء': '19:03'},
+      'times': {
+        'الفجر': '04:55',
+        'الشروق': '06:19',
+        'الظهر': '12:00',
+        'العصر': '15:17',
+        'المغرب': '17:42',
+        'العشاء': '19:03',
+      },
     },
   ];
 
-  Map<String, String> _currentTimings = {};
+  Map<String, String> _currentTimings = <String, String>{};
 
   @override
   void initState() {
     super.initState();
-    _currentTimings = Map<String, String>.from(_cities[_cityIdx]['times'] as Map);
+    _currentTimings = _normalizePrayerTimes(
+      (_cities[_cityIdx]['times'] as Map).map(
+        (key, value) => MapEntry(key.toString(), value.toString()),
+      ),
+    );
     _fetchCityTimings();
     _clock = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted) return;
-      final cur = DateTime.now();
-      setState(() => _now = cur);
-      _checkAdhanAutoPlay(cur);
+      final current = DateTime.now();
+      setState(() => _now = current);
+      _checkAdhanAutoPlay(current);
     });
   }
 
@@ -144,45 +213,70 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  Map<String, String> _normalizePrayerTimes(Map<dynamic, dynamic> source) {
+    final normalized = <String, String>{};
+    final rawTimeMap = source.map(
+      (key, value) => MapEntry(key.toString(), value.toString()),
+    );
+
+    normalized['الفجر'] = _cleanTime(rawTimeMap['الفجر']);
+    normalized['الشروق'] = _cleanTime(rawTimeMap['الشروق']);
+    normalized['الظهر'] = _cleanTime(rawTimeMap['الظهر']);
+    normalized['العصر'] = _cleanTime(rawTimeMap['العصر']);
+    normalized['المغرب'] = _cleanTime(rawTimeMap['المغرب']);
+    normalized['العشاء'] = _cleanTime(rawTimeMap['العشاء']);
+    return normalized;
+  }
+
+  String _cleanTime(String? value) {
+    final text = (value ?? '00:00').toString();
+    return text.split(' ').first;
+  }
+
   Future<void> _fetchCityTimings() async {
-    final c = _cities[_cityIdx];
+    final city = _cities[_cityIdx];
     setState(() {
       _loadingTimes = true;
-      _currentTimings = Map<String, String>.from(c['times'] as Map);
+      _currentTimings = _normalizePrayerTimes(
+        (city['times'] as Map).map(
+          (key, value) => MapEntry(key.toString(), value.toString()),
+        ),
+      );
     });
 
     try {
       final uri = Uri.https('api.aladhan.com', '/v1/timingsByCity', {
-        'city': c['cityEn'].toString(),
-        'country': c['countryEn'].toString(),
+        'city': city['cityEn'].toString(),
+        'country': city['countryEn'].toString(),
         'method': '4',
       });
 
-      final res = await http.get(uri).timeout(const Duration(seconds: 10));
-      if (res.statusCode == 200) {
-        final body = jsonDecode(res.body);
-        final data = body['data'];
-        final timings = data['timings'];
-        final hijri = data['date']['hijri'];
+      final response = await http.get(uri).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        final data = body['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
+        final timings = data['timings'] as Map<String, dynamic>? ?? <String, dynamic>{};
+        final hijri = (data['date'] as Map<String, dynamic>?)?['hijri'] as Map<String, dynamic>? ?? <String, dynamic>{};
 
-        String clean(dynamic v) => (v ?? '00:00').toString().split(' ').first;
+        if (!mounted) return;
 
-        if (mounted) {
-          setState(() {
-            _currentTimings = {
-              'الفجر': clean(timings['Fajr']),
-              'الشروق': clean(timings['Sunrise']),
-              'الظهر': clean(timings['Dhuhr']),
-              'العصر': clean(timings['Asr']),
-              'المغرب': clean(timings['Maghrib']),
-              'العشاء': clean(timings['Isha']),
-            };
-            _hijriDate = '${hijri['weekday']['ar']}، ${hijri['day']} ${hijri['month']['ar']} ${hijri['year']} هـ';
-          });
-        }
+        setState(() {
+          _currentTimings = <String, String>{
+            'الفجر': _cleanTime(timings['Fajr']?.toString()),
+            'الشروق': _cleanTime(timings['Sunrise']?.toString()),
+            'الظهر': _cleanTime(timings['Dhuhr']?.toString()),
+            'العصر': _cleanTime(timings['Asr']?.toString()),
+            'المغرب': _cleanTime(timings['Maghrib']?.toString()),
+            'العشاء': _cleanTime(timings['Isha']?.toString()),
+          };
+          final weekday = (hijri['weekday'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+          final month = (hijri['month'] as Map<String, dynamic>?) ?? <String, dynamic>{};
+          _hijriDate =
+              '${weekday['ar'] ?? ''}، ${hijri['day'] ?? ''} ${month['ar'] ?? ''} ${hijri['year'] ?? ''} هـ';
+        });
       }
     } catch (_) {
-      // Keep local fallback values if the API is unavailable.
+      // Keep local values if the API is unavailable.
     }
 
     if (mounted) {
@@ -190,7 +284,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _checkAdhanAutoPlay(DateTime cur) {
+  void _checkAdhanAutoPlay(DateTime current) {
     for (final entry in _currentTimings.entries) {
       if (entry.key == 'الشروق') continue;
       final parts = entry.value.split(':');
@@ -198,8 +292,8 @@ class _HomePageState extends State<HomePage> {
       final hour = int.tryParse(parts[0]) ?? -1;
       final minute = int.tryParse(parts[1]) ?? -1;
       if (hour == -1 || minute == -1) continue;
-      if (cur.hour == hour && cur.minute == minute && cur.second == 0) {
-        final key = '${cur.day}-${entry.key}';
+      if (current.hour == hour && current.minute == minute && current.second == 0) {
+        final key = '${current.day}-${entry.key}';
         if (_lastAdhanAlert != key) {
           _lastAdhanAlert = key;
           _toggleAdhanAudio(forcePlay: true);
@@ -212,15 +306,19 @@ class _HomePageState extends State<HomePage> {
     try {
       if (_playingAdhan && !forcePlay) {
         await _adhanPlayer.stop();
-        setState(() => _playingAdhan = false);
+        if (mounted) {
+          setState(() => _playingAdhan = false);
+        }
         return;
       }
 
       await _adhanPlayer.stop();
       await _adhanPlayer.play(UrlSource('https://www.islamcan.com/audio/adhan/azan1.mp3'));
-      setState(() => _playingAdhan = true);
-    } catch (e) {
-      debugPrint('Adhan audio error: $e');
+      if (mounted) {
+        setState(() => _playingAdhan = true);
+      }
+    } catch (error) {
+      debugPrint('Adhan audio error: $error');
     }
   }
 
@@ -269,17 +367,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('نور الإسلام الشامل', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'نور الإسلام الشامل',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             tooltip: 'صوت الأذان',
             onPressed: () => _toggleAdhanAudio(forcePlay: true),
-            icon: Icon(_playingAdhan ? Icons.stop_circle : Icons.volume_up, color: kGold),
+            icon: Icon(
+              _playingAdhan ? Icons.stop_circle : Icons.volume_up,
+              color: kGold,
+            ),
           ),
           IconButton(
             tooltip: 'تغيير المظهر',
             onPressed: widget.onThemeChanged,
-            icon: Icon(widget.dark ? Icons.light_mode : Icons.dark_mode, color: kGold),
+            icon: Icon(
+              widget.dark ? Icons.light_mode : Icons.dark_mode,
+              color: kGold,
+            ),
           ),
         ],
       ),
@@ -297,11 +404,27 @@ class _HomePageState extends State<HomePage> {
         selectedIndex: _tab,
         onDestinationSelected: (value) => setState(() => _tab = value),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.mosque_outlined), selectedIcon: Icon(Icons.mosque), label: 'الصلاة والأذان'),
-          NavigationDestination(icon: Icon(Icons.menu_book), label: 'المصحف والتفسير'),
-          NavigationDestination(icon: Icon(Icons.favorite_outline), label: 'الأذكار'),
-          NavigationDestination(icon: Icon(Icons.touch_app), label: 'المسبحة'),
-          NavigationDestination(icon: Icon(Icons.check_circle_outline), label: 'عباداتي'),
+          NavigationDestination(
+            icon: Icon(Icons.mosque_outlined),
+            selectedIcon: Icon(Icons.mosque),
+            label: 'الصلاة والأذان',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.menu_book),
+            label: 'المصحف والتفسير',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_outline),
+            label: 'الأذكار',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.touch_app),
+            label: 'المسبحة',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.check_circle_outline),
+            label: 'عباداتي',
+          ),
         ],
       ),
     );
@@ -338,7 +461,10 @@ class _HomePrayerTabState extends State<HomePrayerTab> {
                 Expanded(
                   child: Text(
                     state._hijriDate.isNotEmpty ? state._hijriDate : '📍 اختر المدينة:',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
                 DropdownButton<int>(
@@ -346,12 +472,15 @@ class _HomePrayerTabState extends State<HomePrayerTab> {
                   underline: const SizedBox(),
                   items: List.generate(
                     state._cities.length,
-                    (i) => DropdownMenuItem(value: i, child: Text(state._cities[i]['name'].toString())),
+                    (index) => DropdownMenuItem(
+                      value: index,
+                      child: Text(state._cities[index]['name'].toString()),
+                    ),
                   ),
-                  onChanged: (v) {
-                    if (v == null) return;
+                  onChanged: (value) {
+                    if (value == null) return;
                     setState(() {
-                      state._cityIdx = v;
+                      state._cityIdx = value;
                     });
                     state._fetchCityTimings();
                   },
@@ -364,35 +493,68 @@ class _HomePrayerTabState extends State<HomePrayerTab> {
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [Color(0xFF087F5B), Color(0xFF053B2B)]),
+            gradient: const LinearGradient(
+              colors: [Color(0xFF087F5B), Color(0xFF053B2B)],
+            ),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             children: [
-              Text('الصلاة القادمة: ${next['name']}', style: const TextStyle(color: Colors.white70, fontSize: 16)),
+              Text(
+                'الصلاة القادمة: ${next['name']}',
+                style: const TextStyle(color: Colors.white70, fontSize: 16),
+              ),
               const SizedBox(height: 8),
-              Text(next['countdown']!, style: const TextStyle(color: kGold, fontSize: 36, fontWeight: FontWeight.bold)),
+              Text(
+                next['countdown'] ?? '00:00:00',
+                style: const TextStyle(
+                  color: kGold,
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               const SizedBox(height: 10),
               ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(backgroundColor: kGold, foregroundColor: Colors.black87),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kGold,
+                  foregroundColor: Colors.black87,
+                ),
                 onPressed: () => state._toggleAdhanAudio(forcePlay: true),
                 icon: Icon(state._playingAdhan ? Icons.stop : Icons.volume_up),
-                label: Text(state._playingAdhan ? 'إيقاف صوت الأذان' : 'تشغيل صوت الأذان الآن'),
+                label: Text(
+                  state._playingAdhan ? 'إيقاف صوت الأذان' : 'تشغيل صوت الأذان الآن',
+                ),
               ),
             ],
           ),
         ),
         if (state._loadingTimes)
-          const Padding(padding: EdgeInsets.all(8), child: LinearProgressIndicator(color: kGold)),
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: LinearProgressIndicator(color: kGold),
+          ),
         const SizedBox(height: 12),
         ...timings.entries.map((entry) {
           final isNext = entry.key == next['name'];
           return Card(
             margin: const EdgeInsets.only(bottom: 8),
             child: ListTile(
-              leading: Icon(isNext ? Icons.notifications_active : Icons.access_time, color: isNext ? kGold : kGreen),
-              title: Text(entry.key, style: const TextStyle(fontWeight: FontWeight.bold)),
-              trailing: Text(entry.value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: isNext ? kGold : null)),
+              leading: Icon(
+                isNext ? Icons.notifications_active : Icons.access_time,
+                color: isNext ? kGold : kGreen,
+              ),
+              title: Text(
+                entry.key,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              trailing: Text(
+                entry.value,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: isNext ? kGold : null,
+                ),
+              ),
             ),
           );
         }),
@@ -413,7 +575,7 @@ class _QuranFullTabState extends State<QuranFullTab> {
   String _search = '';
   int? _playingSurah;
   String _reciterServer = 'https://server8.mp3quran.net/afs';
-  List<dynamic> _surahs = [];
+  List<dynamic> _surahs = <dynamic>[];
   bool _loadingSurahs = true;
 
   final Map<String, String> _reciters = {
@@ -438,9 +600,11 @@ class _QuranFullTabState extends State<QuranFullTab> {
 
   Future<void> _loadAllSurahs() async {
     try {
-      final res = await http.get(Uri.parse('https://api.alquran.cloud/v1/surah')).timeout(const Duration(seconds: 12));
-      if (res.statusCode == 200) {
-        final data = jsonDecode(res.body)['data'] as List<dynamic>;
+      final response = await http
+          .get(Uri.parse('https://api.alquran.cloud/v1/surah'))
+          .timeout(const Duration(seconds: 12));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)['data'] as List<dynamic>;
         if (mounted) {
           setState(() {
             _surahs = data;
@@ -449,7 +613,9 @@ class _QuranFullTabState extends State<QuranFullTab> {
           return;
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      // Ignore network errors and use the fallback list below.
+    }
 
     if (mounted) {
       setState(() {
@@ -480,8 +646,8 @@ class _QuranFullTabState extends State<QuranFullTab> {
       await _player.stop();
       await _player.play(UrlSource(url));
       setState(() => _playingSurah = number);
-    } catch (e) {
-      debugPrint('Audio error: $e');
+    } catch (error) {
+      debugPrint('Audio error: $error');
     }
   }
 
@@ -498,7 +664,9 @@ class _QuranFullTabState extends State<QuranFullTab> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _surahs.where((surah) => surah['name'].toString().contains(_search)).toList();
+    final filtered = _surahs.where(
+      (surah) => surah['name'].toString().contains(_search),
+    ).toList();
 
     return Column(
       children: [
@@ -508,15 +676,27 @@ class _QuranFullTabState extends State<QuranFullTab> {
             children: [
               const Icon(Icons.record_voice_over, color: kGold, size: 20),
               const SizedBox(width: 8),
-              const Text('القارئ:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                'القارئ:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: DropdownButton<String>(
                   value: _reciterServer,
                   isExpanded: true,
-                  items: _reciters.entries.map((entry) => DropdownMenuItem(value: entry.key, child: Text(entry.value))).toList(),
+                  items: _reciters.entries
+                      .map(
+                        (entry) => DropdownMenuItem(
+                          value: entry.key,
+                          child: Text(entry.value),
+                        ),
+                      )
+                      .toList(),
                   onChanged: (value) {
-                    if (value != null) setState(() => _reciterServer = value);
+                    if (value != null) {
+                      setState(() => _reciterServer = value);
+                    }
                   },
                 ),
               ),
@@ -542,7 +722,10 @@ class _QuranFullTabState extends State<QuranFullTab> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('🎧 جاري تلاوة السورة رقم $_playingSurah', style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  '🎧 جاري تلاوة السورة رقم $_playingSurah',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 IconButton(
                   icon: const Icon(Icons.stop_circle, color: Colors.redAccent),
                   onPressed: () async {
@@ -563,7 +746,8 @@ class _QuranFullTabState extends State<QuranFullTab> {
                     final surah = filtered[index];
                     final number = surah['number'] as int;
                     final name = surah['name'].toString();
-                    final ayahsCount = surah['numberOfAyahs'] ?? surah['NumberOfAyahs'] ?? 0;
+                    final ayahsCount =
+                        surah['numberOfAyahs'] ?? surah['NumberOfAyahs'] ?? 0;
                     final isPlaying = _playingSurah == number;
 
                     return Card(
@@ -572,12 +756,28 @@ class _QuranFullTabState extends State<QuranFullTab> {
                         onTap: () => _openSurahWithTafsir(number, name),
                         leading: CircleAvatar(
                           backgroundColor: kGreen,
-                          child: Text('$number', style: const TextStyle(color: Colors.white, fontSize: 13)),
+                          child: Text(
+                            '$number',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
                         ),
-                        title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                        title: Text(
+                          name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                         subtitle: Text('عدد الآيات: $ayahsCount • اضغط للقراءة والتفسير'),
                         trailing: IconButton(
-                          icon: Icon(isPlaying ? Icons.stop_circle : Icons.play_circle_fill, color: isPlaying ? Colors.redAccent : kGold, size: 32),
+                          icon: Icon(
+                            isPlaying ? Icons.stop_circle : Icons.play_circle_fill,
+                            color: isPlaying ? Colors.redAccent : kGold,
+                            size: 32,
+                          ),
                           onPressed: () => _playSurahAudio(number),
                         ),
                       ),
@@ -594,7 +794,11 @@ class SurahReaderPage extends StatefulWidget {
   final int surahNumber;
   final String surahName;
 
-  const SurahReaderPage({super.key, required this.surahNumber, required this.surahName});
+  const SurahReaderPage({
+    super.key,
+    required this.surahNumber,
+    required this.surahName,
+  });
 
   @override
   State<SurahReaderPage> createState() => _SurahReaderPageState();
@@ -603,8 +807,8 @@ class SurahReaderPage extends StatefulWidget {
 class _SurahReaderPageState extends State<SurahReaderPage> {
   bool _loading = true;
   bool _showTafsir = true;
-  List<dynamic> _ayahs = [];
-  List<dynamic> _tafsir = [];
+  List<dynamic> _ayahs = <dynamic>[];
+  List<dynamic> _tafsir = <dynamic>[];
 
   @override
   void initState() {
@@ -614,10 +818,15 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
 
   Future<void> _fetchSurahAndTafsir() async {
     try {
-      final ayahRes = await http.get(Uri.parse('https://api.alquran.cloud/v1/surah/${widget.surahNumber}')).timeout(const Duration(seconds: 12));
-      if (ayahRes.statusCode == 200) {
-        final data = jsonDecode(ayahRes.body)['data'];
-        final ayahs = (data is Map && data.containsKey('ayahs')) ? data['ayahs'] as List<dynamic> : <dynamic>[];
+      final ayahResponse = await http
+          .get(Uri.parse('https://api.alquran.cloud/v1/surah/${widget.surahNumber}'))
+          .timeout(const Duration(seconds: 12));
+      if (ayahResponse.statusCode == 200) {
+        final body = jsonDecode(ayahResponse.body) as Map<String, dynamic>;
+        final data = body['data'];
+        final ayahs = data is Map && data.containsKey('ayahs')
+            ? data['ayahs'] as List<dynamic>
+            : <dynamic>[];
         if (mounted) {
           setState(() {
             _ayahs = ayahs;
@@ -626,10 +835,12 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
         }
       }
 
-      final tafsirRes = await http.get(Uri.parse('https://api.quran.com/api/v4/tafsirs/by_ayah/1?language=ar')).timeout(const Duration(seconds: 12));
-      if (tafsirRes.statusCode == 200) {
-        final items = jsonDecode(tafsirRes.body);
-        final resources = items['tafsirs'] ?? const [];
+      final tafsirResponse = await http
+          .get(Uri.parse('https://api.quran.com/api/v4/tafsirs/by_ayah/1?language=ar'))
+          .timeout(const Duration(seconds: 12));
+      if (tafsirResponse.statusCode == 200) {
+        final items = jsonDecode(tafsirResponse.body) as Map<String, dynamic>;
+        final resources = items['tafsirs'] ?? const <dynamic>[];
         if (resources is List && resources.isNotEmpty && mounted) {
           setState(() {
             _tafsir = resources;
@@ -637,7 +848,7 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
         }
       }
     } catch (_) {
-      // fallback values
+      // Fallback values are used below.
     }
 
     if (mounted && _ayahs.isEmpty) {
@@ -657,9 +868,7 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.surahName),
-      ),
+      appBar: AppBar(title: Text(widget.surahName)),
       body: _loading
           ? const Center(child: CircularProgressIndicator(color: kGreen))
           : ListView(
@@ -675,7 +884,10 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
                   child: Text(
                     'سورة ${widget.surahName}',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -686,9 +898,11 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
                 ),
                 const SizedBox(height: 12),
                 ...List.generate(_ayahs.length, (index) {
-                  final ayah = _ayahs[index];
+                  final ayah = _ayahs[index] as Map<String, dynamic>;
                   final ayahText = ayah['text']?.toString() ?? 'الآية ${index + 1}';
-                  final tafsirText = _tafsir.isNotEmpty && index < _tafsir.length ? _tafsir[index]['text']?.toString() ?? '' : '';
+                  final tafsirText = _tafsir.isNotEmpty && index < _tafsir.length
+                      ? ((_tafsir[index] as Map<String, dynamic>)['text'] ?? '').toString()
+                      : '';
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 10),
@@ -702,7 +916,13 @@ class _SurahReaderPageState extends State<SurahReaderPage> {
                               CircleAvatar(
                                 radius: 14,
                                 backgroundColor: kGold,
-                                child: Text('${index + 1}', style: const TextStyle(color: Colors.black, fontSize: 12)),
+                                child: Text(
+                                  '${index + 1}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
@@ -746,7 +966,7 @@ class AzkarTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final azkar = [
       {'title': 'أذكار الصباح', 'text': 'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ.'},
-      {'title': 'أذكار المساء', 'text': 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ، آمَنْتُ بِاللَّهِ وَكَفَيْتُ بِهِ وَقَضَيْتُ بِهِ، وَإِلَيْهِ أَرْجِعُ.'},
+      {'title': 'أذكار المساء', 'text': 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ، آمَنْتُ بِاللَّهِ وَكَفَيْتُ بِهِ وَقَضَى اللَّهُ أَمْرًا.'},
       {'title': 'دعاء الخروج من المنزل', 'text': 'بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، لا حَوْلَ وَلا قُوَّةَ إِلَّا بِاللَّهِ.'},
       {'title': 'دعاء الدخول إلى المسجد', 'text': 'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ.'},
       {'title': 'دعاء الطعام', 'text': 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مِنَ الْمُسْلِمِينَ.'},
@@ -799,7 +1019,11 @@ class _TasbihTabState extends State<TasbihTab> {
           children: [
             Text(
               '$_count / $_goal',
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: kGreen),
+              style: const TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: kGreen,
+              ),
             ),
             const SizedBox(height: 18),
             GestureDetector(
@@ -809,15 +1033,25 @@ class _TasbihTabState extends State<TasbihTab> {
                 height: 180,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: const LinearGradient(colors: [kGreen, Color(0xFF0A2A24)]),
+                  gradient: const LinearGradient(
+                    colors: [kGreen, Color(0xFF0A2A24)],
+                  ),
                   boxShadow: [
-                    BoxShadow(color: kGreen.withOpacity(0.35), blurRadius: 20, spreadRadius: 3),
+                    BoxShadow(
+                      color: kGreen.withOpacity(0.35),
+                      blurRadius: 20,
+                      spreadRadius: 3,
+                    ),
                   ],
                 ),
                 child: const Center(
                   child: Text(
                     'سبحان الله',
-                    style: TextStyle(fontSize: 28, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -856,7 +1090,7 @@ class DailyTrackerTab extends StatefulWidget {
 }
 
 class _DailyTrackerTabState extends State<DailyTrackerTab> {
-  final Map<String, bool> _checks = {
+  final Map<String, bool> _checks = <String, bool>{
     'الفجر': false,
     'الظهر': false,
     'العصر': false,
@@ -879,8 +1113,17 @@ class _DailyTrackerTabState extends State<DailyTrackerTab> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('التقدم اليومي', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                Text('$completed / ${_checks.length}', style: const TextStyle(fontWeight: FontWeight.bold, color: kGreen)),
+                const Text(
+                  'التقدم اليومي',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                Text(
+                  '$completed / ${_checks.length}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: kGreen,
+                  ),
+                ),
               ],
             ),
           ),
@@ -902,3 +1145,4 @@ class _DailyTrackerTabState extends State<DailyTrackerTab> {
     );
   }
 }
+
