@@ -2,27 +2,38 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          channel: 'stable'
+          distribution: temurin
+          java-version: '17'
 
-      - name: Get Dependencies & Build APK
-        run: |
-          flutter pub get
-          flutter build apk --release --split-per-abi
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
 
-      - name: Upload APK
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-light
-          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-          
+          name: prayer-times-app-release
+          path: build/app/outputs/flutter-apk/*.apk
+          if-no-files-found: error
